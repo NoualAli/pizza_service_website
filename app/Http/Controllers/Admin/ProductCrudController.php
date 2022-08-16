@@ -97,9 +97,10 @@ class ProductCrudController extends CrudController
         CRUD::field('menu')->type('relationship')->wrapper(DEFAULT_INPUT_CLASS);
         CRUD::field('name');
         CRUD::field('description');
-        CRUD::field('price');
-        CRUD::field('price_medium')->wrapper(DEFAULT_INPUT_CLASS);
-        CRUD::field('price_large')->wrapper(DEFAULT_INPUT_CLASS);
-        CRUD::field('ingredients')->type('relationship');
+        CRUD::field('price')->type('number')->wrapper(WRAPPER_4_COL)->prefix('€');
+        CRUD::field('price_medium')->type('number')->wrapper(WRAPPER_4_COL)->prefix('€');
+        CRUD::field('price_large')->type('number')->wrapper(WRAPPER_4_COL)->prefix('€');
+        CRUD::field('ingredients')->type('relationship')->wrapper(DEFAULT_INPUT_CLASS);
+        CRUD::field('extra')->type('relationship')->wrapper(DEFAULT_INPUT_CLASS);
     }
 }
