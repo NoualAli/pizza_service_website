@@ -80,23 +80,23 @@ class RestaurantCrudController extends CrudController
     {
         CRUD::setValidation(StoreRequest::class);
 
+        // General
         CRUD::field('name')->tab('General');
         CRUD::field('description')->type('textarea')->tab('General');
         CRUD::field('thumbnail')->type('image')->filename(null)->crop(true)->tab('General');
 
+        // Settings
         CRUD::field('minimum_order')->type('number')->prefix('€')->tab('Settings')->attributes(['step' => 'any']);
         CRUD::field('opening')->type('time')->wrapper(DEFAULT_INPUT_CLASS)->tab('Settings');
         CRUD::field('closing')->type('time')->wrapper(DEFAULT_INPUT_CLASS)->tab('Settings');
-
         CRUD::field('categories')->type('relationship')->tab('Settings');
         CRUD::field('menus')->type('relationship')->tab('Settings');
         CRUD::field('users')->type('relationship')->default(backpack_user())->tab('Settings');
-        CRUD::field('locations')->type('repeatable')->subfields([
-            [
-                'name' => 'address',
-                'type' => 'address_algolia'
-            ],
-        ])->tab('Settings');
+
+        // Location
+        CRUD::field('address')->type('address_algolia')->tab('location');
+        CRUD::field('longitude')->type('number')->tab('location')->wrapper(DEFAULT_INPUT_CLASS);
+        CRUD::field('latitude')->type('number')->tab('location')->wrapper(DEFAULT_INPUT_CLASS);
     }
 
     /**
@@ -109,22 +109,22 @@ class RestaurantCrudController extends CrudController
     {
         CRUD::setValidation(UpdateRequest::class);
 
+        // General
         CRUD::field('name')->tab('General');
         CRUD::field('description')->type('textarea')->tab('General');
         CRUD::field('thumbnail')->type('image')->filename(null)->crop(true)->tab('General');
 
+        // Settings
         CRUD::field('minimum_order')->type('number')->prefix('€')->tab('Settings')->attributes(['step' => 'any']);
         CRUD::field('opening')->type('time')->wrapper(DEFAULT_INPUT_CLASS)->tab('Settings');
         CRUD::field('closing')->type('time')->wrapper(DEFAULT_INPUT_CLASS)->tab('Settings');
-
         CRUD::field('categories')->type('relationship')->tab('Settings');
         CRUD::field('menus')->type('relationship')->tab('Settings');
         CRUD::field('users')->type('relationship')->default(backpack_user())->tab('Settings');
-        CRUD::field('locations')->type('repeatable')->subfields([
-            [
-                'name' => 'address',
-                'type' => 'address_algolia'
-            ],
-        ])->tab('Settings');
+
+        // Location
+        CRUD::field('address')->type('address_algolia')->tab('location');
+        CRUD::field('longitude')->type('number')->tab('location')->wrapper(DEFAULT_INPUT_CLASS);
+        CRUD::field('latitude')->type('number')->tab('location')->wrapper(DEFAULT_INPUT_CLASS);
     }
 }

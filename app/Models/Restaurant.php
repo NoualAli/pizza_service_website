@@ -15,9 +15,9 @@ class Restaurant extends Model
 
     protected $identifiableAttribute = 'name';
 
-    protected $fillable = ['name', 'description', 'thumbnail', 'opening', 'closing', 'minimum_order'];
+    protected $fillable = ['name', 'description', 'thumbnail', 'opening', 'closing', 'minimum_order', 'address', 'longitude', 'latitude'];
 
-    public $with = ['users', 'locations'];
+    public $with = ['users'];
 
 
     /**
@@ -59,11 +59,6 @@ class Restaurant extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class, (new RestaurantsCategories)->getTable());
-    }
-
-    public function locations()
-    {
-        return $this->hasMany(RestaurantLocation::class);
     }
 
     public function contacts()

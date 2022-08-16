@@ -21,6 +21,9 @@ return new class extends Migration
             $table->time('opening')->nullable();
             $table->time('closing')->nullable();
             $table->float('minimum_order');
+            $table->string('address');
+            $table->string('longitude');
+            $table->string('latitude');
             $table->timestamps();
         });
     }
