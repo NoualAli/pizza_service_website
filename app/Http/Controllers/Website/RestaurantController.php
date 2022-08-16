@@ -19,7 +19,7 @@ class RestaurantController extends Controller
         $restaurants = Restaurant::all();
         $menus = Menu::all();
 
-        // return view('website.pages.restaurants_map_list', compact('restaurants', 'menus'));
+        return view('website.pages.restaurants', compact('restaurants', 'menus'));
     }
 
     /**
