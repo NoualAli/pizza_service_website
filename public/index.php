@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 define('DEFAULT_INPUT_CLASS', ['class' => "form-group col-lg-6 col-12"]);
+define('WRAPPER_4_COL', ['class' => "form-group col-lg-4 col-12"]);
 
 /*
 |--------------------------------------------------------------------------
