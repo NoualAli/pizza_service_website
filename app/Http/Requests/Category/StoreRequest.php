@@ -25,6 +25,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255', 'unique:categories,name'],
+            'thumbnail' => ['nullable', 'image', 'mimes:png,jpg,jpeg'],
             'restaurants' => ['nullable', 'array'],
             'restaurants.*' => ['nullable', 'exists:restaurants,id']
         ];
