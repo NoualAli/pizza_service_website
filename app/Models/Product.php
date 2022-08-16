@@ -27,7 +27,12 @@ class Product extends Model
 
     public function ingredients()
     {
-        return $this->belongsToMany(Ingredient::class, (new Recipe)->getTable());
+        return $this->belongsToMany(Ingredient::class, (new Recipe)->getTable())->whereNull('as_extra');
+    }
+
+    public function extra()
+    {
+        return $this->belongsToMany(Ingredient::class, (new Recipe)->getTable())->whereNotNull('as_extra');
     }
 
     public function recipes()
