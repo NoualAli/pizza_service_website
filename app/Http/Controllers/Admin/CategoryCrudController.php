@@ -67,6 +67,7 @@ class CategoryCrudController extends CrudController
         CRUD::setValidation(StoreRequest::class);
 
         CRUD::field('name');
+        CRUD::field('thumbnail')->type('image')->filename(null)->crop(true);
         CRUD::field('restaurants')->type('relationship');
     }
 
@@ -81,6 +82,7 @@ class CategoryCrudController extends CrudController
         CRUD::setValidation(UpdateRequest::class);
 
         CRUD::field('name');
+        CRUD::field('thumbnail')->type('image')->filename(null)->crop(true);
         CRUD::field('restaurants')->type('relationship');
     }
 }
