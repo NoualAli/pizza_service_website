@@ -7,6 +7,6 @@
 @endsection
 @once
     @push('scripts')
-        <script src="{{ mix('js/restaurants.js') }}"></script>
+        <script src="{{ asset(mix('js/restaurants.js')) }}"></script>
     @endpush
 @endonce

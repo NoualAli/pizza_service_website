@@ -17,7 +17,7 @@
 
 @once
     @push('scripts')
-        <script src="{{ mix('js/home.js') }}"></script>
+        <script src="{{ asset(mix('js/home.js')) }}"></script>
         <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
         <link rel="stylesheet"
             href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css"
