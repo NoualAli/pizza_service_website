@@ -17,15 +17,15 @@ $title = $__env->yieldContent('title') ? ' | ' . $__env->yieldContent('title') :
 </head>
 
 <body>
+    @include('website.includes.preloader')
     <div id="app">
-        {{-- @include('website.includes.preloader') --}}
         <main-navbar></main-navbar>
         <main>
             @yield('content')
         </main>
-        {{-- @include('website.includes.scroll_top') --}}
-
     </div>
+    @include('website.includes.scroll_top')
+    @include('website.includes.footer')
     @stack('before_scripts')
     @stack('scripts')
 </body>
