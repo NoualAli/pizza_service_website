@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('home', [HomeController::class, 'index']);
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('restaurants', [RestaurantController::class, 'index'])->name('restaurants.list');
 Route::get('restaurants/{restaurant}', [RestaurantController::class, 'show'])->name('restaurants.single');
