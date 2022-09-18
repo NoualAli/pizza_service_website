@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Operations\RestoreOperation;
 use App\Http\Requests\User\StoreRequest;
 use App\Http\Requests\User\UpdateRequest;
-use App\Http\Requests\UserRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\PermissionManager\app\Http\Controllers\UserCrudController as ControllersUserCrudController;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 
 /**
  * Class UserCrudController
@@ -18,11 +21,9 @@ use Spatie\Permission\Models\Role;
  */
 class UserCrudController extends ControllersUserCrudController
 {
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use ListOperation, CreateOperation, UpdateOperation, ShowOperation, RestoreOperation, DeleteOperation {
+        destroy as traitDestroiy;
+    }
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -31,7 +32,9 @@ class UserCrudController extends ControllersUserCrudController
      */
     public function setup()
     {
-        abort_if(!auth()->user()->hasRole('root'), 403);
+        $userRole = auth()->user()->roles->pluck('name')->toArray();
+        abort_if(!in_array('root', $userRole) && !in_array('admin', $userRole), 403);
+
         CRUD::setModel(\App\Models\User::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/user');
         CRUD::setEntityNameStrings('user', 'users');
@@ -78,6 +81,17 @@ class UserCrudController extends ControllersUserCrudController
                 $this->crud->addClause('whereHas', 'roles', function ($query) use ($value) {
                     $query->where('role_id', '=', $value);
                 });
+            }
+        );
+        $this->crud->addFilter(
+            [
+                'type'  => 'simple',
+                'name'  => 'trashed',
+                'label' => 'Trashed'
+            ],
+            false,
+            function ($values) { // if the filter is active
+                $this->crud->query = $this->crud->query->onlyTrashed();
             }
         );
     }
@@ -178,11 +192,13 @@ class UserCrudController extends ControllersUserCrudController
                 'name'  => 'username',
                 'label' => ucfirst(strtolower(__('username'))),
                 'type'  => 'text',
+                'wrapper' => DEFAULT_INPUT_CLASS
             ],
             [
                 'name'  => 'email',
                 'label' => trans('backpack::permissionmanager.email'),
                 'type'  => 'email',
+                'wrapper' => DEFAULT_INPUT_CLASS
             ],
             [
                 'name'  => 'phone',
@@ -193,11 +209,13 @@ class UserCrudController extends ControllersUserCrudController
                 'name'  => 'password',
                 'label' => trans('backpack::permissionmanager.password'),
                 'type'  => 'password',
+                'wrapper' => DEFAULT_INPUT_CLASS
             ],
             [
                 'name'  => 'password_confirmation',
                 'label' => trans('backpack::permissionmanager.password_confirmation'),
                 'type'  => 'password',
+                'wrapper' => DEFAULT_INPUT_CLASS
             ],
             [ // n-n relationship (with pivot table)
                 'label'     => trans('backpack::permissionmanager.roles'), // Table column heading
@@ -220,5 +238,16 @@ class UserCrudController extends ControllersUserCrudController
     {
         $this->addUserFields();
         $this->crud->setValidation(UpdateRequest::class);
+    }
+
+    public function destroy($id)
+    {
+        $this->crud->hasAccessOrFail('delete');
+
+        $item = $this->crud->model->withTrashed()->findOrFail($id);
+        if ($item->deleted_at) {
+            return $item->forceDelete();
+        }
+        return $item->delete();
     }
 }

@@ -26,7 +26,6 @@ class UpdateRequest extends FormRequest
         $id = request()->has('id') ? request()->id : null;
         return [
             'name' => ['required', 'unique:ingredients,name,' . $id . ',id', 'max:255'],
-            'extra_price' => ['nullable', 'numeric']
         ];
     }
 }

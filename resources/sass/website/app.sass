@@ -1,41 +1,61 @@
 @import "./variables"
 @import "bootstrap-icons/font/bootstrap-icons.scss"
 @import "bootstrap/scss/bootstrap"
+@import "~line-awesome/dist/line-awesome/css/line-awesome.min.css"
 @import "./components/card"
 @import "./components/box"
 @import "./components/scroll_top"
 @import "./components/preloader"
+@import "./components/table"
+@import "./components/radio"
+@import "./components/navbar"
+@import "./animations"
 
-html, body
-    height: 100%
+*
+    box-sizing: border-box
+
+body
+    height: auto
+    min-height: 100vh
+    width: 100%
+    scroll-behavior: smooth
 
 main
     position: relative
-    top: $navbar-height
+    // top: $navbar-height
     min-height: $main-section-height
+    height: auto
+
+footer
+    position: relative
+    height: auto
 
 .header
     background: $light
     transition: all 0.5s
     z-index: 997
-    height: auto
+    height: $header-height
     width: 100%
     border-bottom: 1px solid $white
-    &.is-home
-        position: relative
-        height: calc( 50vh + $navbar-height)
-        overflow: auto
-        @include media-breakpoint-down(sm)
-            height: $header-home-height
-        & .map-wrapper
-            position: relative
-            width: 100%
-            height: 100%
-            padding: 0 5px
-            overflow: hidden
-            & #map
-                height: 100%
-                width: 100%
-        & .accordion-wrapper
-            overflow: auto !important
-            height: 100%
+
+.product-quantity
+    max-width: 60px
+
+.list-style-none
+    list-style: none !important
+
+.required
+    position: relative
+    &::after
+        content: '*'
+        position: absolute
+        right: -10px
+        color: #DF4759
+
+.is-sticky
+    position: -webkit-sticky
+    position: sticky !important
+    top: 61px
+
+.form-control
+    border-radius: 0 !important

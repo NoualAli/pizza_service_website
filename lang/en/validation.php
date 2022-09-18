@@ -158,6 +158,17 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'client.username' => 'username',
+        'client.lastname' => 'lastname',
+        'client.firstname' => 'firstname',
+        'client.phone' => 'phone',
+        'client.email' => 'email',
+        'client.location.street' => 'street',
+        'client.location.entrance' => 'entrance',
+        'client.location.appartment_number' => 'appartment number',
+        'client.location.postal_code' => 'postal code',
+        'client.location.city' => 'city',
+    ],
 
 ];

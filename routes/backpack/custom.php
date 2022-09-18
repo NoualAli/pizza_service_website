@@ -22,4 +22,17 @@ Route::group([
     Route::crud('product', 'ProductCrudController');
     Route::crud('ingredient', 'IngredientCrudController');
     Route::crud('category', 'CategoryCrudController');
-}); // this should be the absolute last line of this file
+    Route::crud('extra', 'ExtraCrudController');
+});
+
+Route::group([
+    'prefix'     => config('backpack.base.custom_prefixes.ps', 'ps'),
+    'middleware' => array_merge(
+        (array) config('backpack.base.web_middleware', 'web'),
+        // (array) config('backpack.base.middleware_key', 'admin')
+    ),
+    'namespace'  => 'App\Http\Controllers\Admin',
+], function () {
+    Route::crud('order', 'OrderCrudController');
+    Route::crud('order-lines', 'OrderLinesCrudController');
+});

@@ -2,23 +2,29 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Concerns\HasMedia;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Jackiedo\Cart\Traits\CanUseCart;
 
 class Product extends Model
 {
-    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
-    use HasFactory;
+    use CrudTrait, HasMedia, CanUseCart, SoftDeletes;
 
     protected $fillable = [
         'name',
         'description',
-        'price',
-        'price_medium',
-        'price_large',
+        'price_norm',
+        'price_perhe',
+        'price_pannu',
         'menu_id',
         'restaurant_id'
     ];
+
+    protected $cartTitleField = 'name';
+
+    public $with = ['extras', 'recipes'];
 
     public function restaurant()
     {
@@ -27,12 +33,12 @@ class Product extends Model
 
     public function ingredients()
     {
-        return $this->belongsToMany(Ingredient::class, (new Recipe)->getTable())->whereNull('as_extra');
+        return $this->belongsToMany(Ingredient::class, (new Recipe)->getTable());
     }
 
-    public function extra()
+    public function extras()
     {
-        return $this->belongsToMany(Ingredient::class, (new Recipe)->getTable())->whereNotNull('as_extra');
+        return $this->belongsToMany(Extra::class, (new ProductExtra)->getTable());
     }
 
     public function recipes()

@@ -17,12 +17,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->decimal('price');
-            $table->decimal('price_medium')->nullable();
-            $table->decimal('price_large')->nullable();
+            $table->string('thumbnail')->nullable();
+            $table->decimal('price_norm');
+            $table->decimal('price_perhe')->nullable();
+            $table->decimal('price_pannu')->nullable();
             $table->foreignId('menu_id')->nullable();
             $table->foreignId('restaurant_id');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('restaurant_id')->on('restaurants')->references('id')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('menu_id')->on('menus')->references('id')->onDelete('set null')->onUpdate('cascade');

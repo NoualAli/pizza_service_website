@@ -4,9 +4,11 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
-define('DEFAULT_INPUT_CLASS', ['class' => "form-group col-lg-6 col-12"]);
-define('WRAPPER_4_COL', ['class' => "form-group col-lg-4 col-12"]);
-
+define('DEFAULT_INPUT_CLASS', ['class' => "form-group col-lg-6 col-12"]); // 2 Columns Grid
+define('WRAPPER_4_COL', ['class' => "form-group col-lg-4 col-12"]); // 4 Columns Grid
+define('EURO_SIGN', ' €');
+define('DEFAULT_DISTANCE', 30); // default distance to locate the nearest restaurants within a defined radius
+define('PHONE_REGEX', '/^((04[0-9]{1})(\s?|-?)|050(\s?|-?)|0457(\s?|-?)|[+]?358(\s?|-?)50|0358(\s?|-?)50|00358(\s?|-?)50|[+]?358(\s?|-?)4[0-9]{1}|0358(\s?|-?)4[0-9]{1}|00358(\s?|-?)4[0-9]{1})(\s?|-?)(([0-9]{3,4})(\s|\-)?[0-9]{1,4})$/');
 /*
 |--------------------------------------------------------------------------
 | Check If The Application Is Under Maintenance

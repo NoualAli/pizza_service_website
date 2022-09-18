@@ -17,15 +17,16 @@ class RestaurantResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'thumbnail' => $this->thumbnail,
-            'slots' => $this->slots,
-            'opening' => $this->opening,
-            'closing' => $this->closing,
+            'cover' => $this->cover,
+            'today_time_slots' => $this->today_time_slots,
             'address' => $this->address,
-            'longitude' => $this->longitude,
-            'latitude' => $this->latitude,
-            'categories' => $this->categories,
-            'menus' => $this->menus,
+            'link' => route('restaurants.single', $this),
+            'is_open' => $this->is_open,
+            'delivery_time' => $this->delivery_time,
+            'distance' => $this->distance,
+            'avg_price' => number_format($this->products()->avg('price_norm')),
+            'categories_string' => implode(', ', $this->categories->pluck('name')->toArray()),
+            'categories' => $this->categories
         ];
     }
 }

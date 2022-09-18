@@ -1,0 +1,27 @@
+// table
+.ps-responsive-table
+    th
+        display: none
+    td
+        display: flex
+        justify-content: space-between
+        align-items: center
+        &:first-child
+            padding-top: 0.5em
+        &:last-child
+            padding-bottom: 0.5em
+        &::before
+            content: attr(data-th)
+            font-weight: bold
+            width: auto
+    & th,
+    & td
+        text-align: left
+        position: relative !important
+        margin: 0.5em 1em
+    @media (min-width: 1024px)
+        & th,
+        & td
+            display: table-cell
+        & td:before
+            display: none

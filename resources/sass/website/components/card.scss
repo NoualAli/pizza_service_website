@@ -1,186 +1,84 @@
-$ps-card-theme : $primary;
+.ps-card--container {
+    position: relative;
+    font-family: 'Cairo', sans-serif;
+    color: #7c7671;
+    width: 400px;
 
-@mixin radius($val) {
-    -webkit-border-radius: $val;
-    -moz-border-radius: $val;
-    border-radius: $val;
-}
-
-@mixin cardsOpen() {
-    &::before {
-        background: rgba(10, 72, 112, 0.6);
-    }
-
-    .book-container {
-        .content {
-            opacity: 1;
-
-            transform: translateY(0px);
-        }
-    }
-
-    .informations-container {
-        transform: translateY(0px);
-
-        .more-informations {
-            opacity: 1;
-        }
+    @include media-breakpoint-down(sm) {
+        width: 100%;
     }
 }
 
 .ps-card {
-    position: relative;
     width: 100%;
+    margin: auto;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    color: unset;
+}
+
+.ps-card:hover {
+    color: unset;
+    text-decoration: none;
+}
+
+.ps-card--img {
+    border-radius: 10px;
+    height: 200px;
+    width: 100%;
+}
+
+.ps-card--body {
+    box-shadow: 0 4px 15px rgba(175, 77, 0, 0.13);
+    padding: 13px;
+    border-radius: 8px;
+    margin: -30px 10px 0;
+    position: relative;
+    z-index: 2;
+    background-color: #fff;
+}
+
+.ps-card--body h4 {
+    color: #474340;
+    line-height: 100%;
+    font-weight: bold;
+}
+
+.ps-card--body p {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 0.4rem;
+}
+
+.ps-card--categories span {
+    background-color: rgba($primary, .1);
+    padding: 5px 10px 7px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 12px;
+    color: $primary;
+    font-weight: bold;
+    line-height: 100%;
+}
+
+.ps-card--details {
+    margin-top: 5px;
     display: flex;
-    flex: 0 0 300px;
-    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+}
 
-    margin: 20px;
-    margin-bottom: 30px;
-    @include radius(10px);
+.ps-card--detail i {
+    vertical-align: middle;
+}
 
-    overflow: hidden;
 
-    background-position: center center;
-    background-size: cover;
-
-    text-align: center;
-    color: $ps-card-theme;
-
-    transition: .3s;
-
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-
-        background: rgba(10, 72, 112, 0);
-
-        transition: .3s;
-    }
-
-    .book-container {
-        height: 200px;
-
-        .content {
-            position: relative;
-            opacity: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            width: 100%;
-
-            transform: translateY(-200px);
-
-            transition: .3s;
-
-            .btn {
-                border: 3px solid white;
-                padding: 10px 15px;
-
-                background: none;
-
-                text-transform: uppercase;
-                font-weight: bold;
-                font-size: 1.3em;
-                color: white;
-
-                cursor: pointer;
-
-                transition: .3s;
-
-                &:hover {
-                    background: white;
-
-                    border: 0px solid white;
-
-                    color: $ps-card-theme;
-                }
-            }
-        }
-    }
-
-    .informations-container {
-        flex: 1 0 auto;
-
-        padding: 20px;
-
-        background: $gray-200;
-
-        transform: translateY(120px);
-
-        transition: .3s;
-
-        .title {
-            position: relative;
-
-            padding-bottom: 10px;
-            margin-bottom: 10px;
-
-            font-weight: bold;
-            font-size: 1.2em;
-
-            &::after {
-                content: '';
-
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-
-                height: 3px;
-                width: 50px;
-
-                margin: auto;
-
-                background: $ps-card-theme;
-            }
-        }
-
-        .price {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            margin-top: 10px;
-
-            .icon {
-                margin-right: 10px;
-            }
-        }
-
-        .more-informations {
-            opacity: 0;
-            transition: .3s;
-            display: flex;
-            justify-content: center;
-            align-items: space-between;
-            gap: 10px;
-
-            .box {
-                flex: 1 0;
-
-                padding: 10px;
-                @include radius(10px);
-
-                background: white;
-
-                font-weight: bold;
-                font-size: 0.9em;
-
-                .icon {
-                    margin-bottom: 5px;
-                    font-size: 15px;
-                }
-            }
-        }
-    }
-
-    &:hover {
-        @include cardsOpen();
-    }
+.ps-card--detail span {
+    // font-size: 16px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 2px;
 }

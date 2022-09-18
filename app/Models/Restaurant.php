@@ -3,39 +3,102 @@
 namespace App\Models;
 
 use App\Concerns\HasMedia;
-use App\Observers\RestaurantObserver;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Restaurant extends Model
 {
-    use \Backpack\CRUD\app\Models\Traits\CrudTrait, HasMedia;
-    use HasFactory;
+    use CrudTrait, HasMedia, SoftDeletes;
 
     protected $identifiableAttribute = 'name';
 
-    protected $fillable = ['name', 'description', 'thumbnail', 'opening', 'closing', 'minimum_order', 'address', 'longitude', 'latitude'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'cover',
+        'time_slots',
+        'minimum_order',
+        'delivery_fee',
+        'discount',
+        'delivery_time',
+        'address',
+        'phone',
+        'email',
+        'longitude',
+        'latitude',
+        'order_types',
+    ];
 
-    public $with = ['users'];
+    protected $appends = [
+        'is_open',
+    ];
 
+    protected $casts = [
+        'order_types' => 'array'
+    ];
+
+    public function getCoverAttribute($cover)
+    {
+        return file_exists($cover) ? $cover : 'assets/no-image-available.svg';
+    }
+
+    public function getTodayTimeSlotsAttribute()
+    {
+        $time_slots = json_decode($this->time_slots, true);
+        if ($time_slots) {
+            foreach ($time_slots as $item) {
+                if ($item['week_day'] == Carbon::today()->format('l')) {
+                    return $item['opening'] . ' - ' . $item['closing'];
+                }
+            }
+        }
+    }
+
+    public function getClosingAttribute()
+    {
+        $time_slots = json_decode($this->time_slots, true);
+        foreach ($time_slots as $item) {
+            if ($item['week_day'] == Carbon::today()->format('l')) {
+                return $item['closing'];
+            }
+        }
+    }
+
+    public function getOpeningAttribute()
+    {
+        $time_slots = json_decode($this->time_slots, true);
+        foreach ($time_slots as $item) {
+            if ($item['week_day'] == Carbon::today()->format('l')) {
+                return $item['opening'];
+            }
+        }
+    }
+
+    public function getIsOpenAttribute()
+    {
+        return Carbon::now()->gt($this->opening) && !Carbon::now()->gt($this->closing);
+    }
+
+    public function getCoordinatesAttribute()
+    {
+        return $this->latitude . ',' . $this->longitude;
+    }
 
     /**
-     * Getters
+     * Scopes
      */
-    public function getClosingAttribute($closing)
+    public function scopeNearest($query)
     {
-        return Carbon::parse($closing)->format('H:i');
-    }
-
-    public function getOpeningAttribute($opening)
-    {
-        return Carbon::parse($opening)->format('H:i');
-    }
-
-    public function getSlotsAttribute()
-    {
-        return "{$this->opening} - {$this->closing}";
+        $coords = getUserCoords();
+        extract($coords);
+        return $query->select(DB::raw('*, ROUND((6371000 * acos(cos(radians(' . $latitude . '))
+        * cos(radians(latitude)) * cos(radians(longitude) - radians(' . $longitude . '))
+        + sin(radians(' . $latitude . ')) * sin(radians(latitude)))) / 1000) AS distance'))
+            ->having('distance', '<=', DEFAULT_DISTANCE)
+            ->orderBy('distance');
     }
 
     /**
@@ -64,5 +127,10 @@ class Restaurant extends Model
     public function contacts()
     {
         return $this->hasMany(RestaurantContact::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

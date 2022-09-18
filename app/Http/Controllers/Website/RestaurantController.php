@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Website;
 
 use App\Http\Controllers\Controller;
-use App\Models\Menu;
 use App\Models\Restaurant;
-use Illuminate\Http\Request;
+use Jackiedo\Cart\Facades\Cart;
 
 class RestaurantController extends Controller
 {
@@ -16,10 +15,7 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        $restaurants = Restaurant::all();
-        $menus = Menu::all();
-
-        return view('website.pages.restaurants', compact('restaurants', 'menus'));
+        return view('website.pages.restaurants');
     }
 
     /**
@@ -30,6 +26,22 @@ class RestaurantController extends Controller
      */
     public function show(Restaurant $restaurant)
     {
-        dd($restaurant, $restaurant->menus, $restaurant->locations, $restaurant->users, $restaurant->contacts);
+        if (!session('current-restaurant')) {
+            session(['current-restaurant' => $restaurant]);
+        } else {
+            if (session('current-restaurant')?->id !== $restaurant->id) {
+                Cart::name('order-cart')->destroy();
+                session(['current-restaurant' => $restaurant]);
+            }
+        }
+        $restaurant->load(['products', 'menus']);
+        return view('website.pages.restaurant', compact('restaurant'));
+    }
+
+    public function current()
+    {
+        return response()->json([
+            'current_restaurant' => session()->get('current-restaurant')
+        ]);
     }
 }

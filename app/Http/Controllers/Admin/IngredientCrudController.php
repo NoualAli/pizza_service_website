@@ -4,8 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Ingredient\StoreRequest;
 use App\Http\Requests\Ingredient\UpdateRequest;
-use App\Http\Requests\IngredientRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
@@ -15,12 +20,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  */
 class IngredientCrudController extends CrudController
 {
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation;
+    use ListOperation, CreateOperation, UpdateOperation, DeleteOperation, ShowOperation, BulkDeleteOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -43,7 +43,6 @@ class IngredientCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::column('name');
-        CRUD::column('as_extra')->type('boolean');
     }
 
     /**
@@ -57,7 +56,6 @@ class IngredientCrudController extends CrudController
         CRUD::setValidation(StoreRequest::class);
 
         CRUD::field('name');
-        CRUD::field('extra_price')->type('number')->prefix('€');
     }
 
     /**
@@ -71,6 +69,5 @@ class IngredientCrudController extends CrudController
         CRUD::setValidation(UpdateRequest::class);
 
         CRUD::field('name');
-        CRUD::field('extra_price')->type('number')->prefix('€');
     }
 }

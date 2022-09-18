@@ -12,8 +12,8 @@ return [
     */
 
     // Date & Datetime Format Syntax: https://carbon.nesbot.com/docs/#api-localization
-    'default_date_format'     => 'D MMM YYYY',
-    'default_datetime_format' => 'D MMM YYYY, HH:mm',
+    'default_date_format'     => 'YYYY-MM-DD',
+    'default_datetime_format' => 'YYYY-MM-DD, HH:mm',
 
     // Direction, according to language
     // (left-to-right vs right-to-left)
@@ -42,8 +42,8 @@ return [
 
     // CSS files that are loaded in all pages, using Laravel's asset() helper
     'styles' => [
-        'packages/backpack/base/css/bundle.css', // has primary color electric purple (backpack default)
-        // 'packages/backpack/base/css/blue-bundle.css', // has primary color blue
+        // 'packages/backpack/base/css/bundle.css', // has primary color electric purple (backpack default)
+        'packages/backpack/base/css/blue-bundle.css', // has primary color blue
 
         // Here's what's inside the bundle:
         // 'packages/@digitallyhappy/backstrap/css/style.min.css',
@@ -64,7 +64,7 @@ return [
 
     // CSS files that are loaded in all pages, using Laravel's mix() helper
     'mix_styles' => [ // file_path => manifest_directory_path
-        // 'css/app.css' => '',
+        'website/css/custom.css' => '',
     ],
 
     // ------
@@ -73,7 +73,8 @@ return [
 
     // Menu logo. You can replace this with an <img> tag if you have a logo.
     // 'project_logo'   => '<b>GoGo</b>Food',
-    'project_logo'   => '<img src="/assets/brand.png" height="45">',
+    // 'project_logo'   => '<img src="' . env('APP_URL') . '/assets/brand.png" height="45">', // Prod brand
+    'project_logo'   => '<img src="/assets/brand.png" height="45">', // Dev brand
 
     // Show / hide breadcrumbs on admin panel pages.
     'breadcrumbs' => true,
@@ -165,7 +166,7 @@ return [
     | By default the registration is open only on localhost.
     */
 
-    'registration_open' => env('BACKPACK_REGISTRATION_OPEN', env('APP_ENV') === 'local'),
+    'registration_open' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -176,6 +177,15 @@ return [
     // The prefix used in all base routes (the 'admin' in admin/dashboard)
     // You can make sure all your URLs use this prefix by using the backpack_url() helper instead of url()
     'route_prefix' => 'admin',
+
+    'custom_prefixes' => [
+        'admin' => 'admin',
+        'auth' => 'auth',
+        'registration' => 'registration',
+        'password-recovery' => 'password',
+        'account' => 'account',
+        'ps' => 'ps'
+    ],
 
     // The web middleware (group) used in all base & CRUD routes
     // If you've modified your "web" middleware group (ex: removed sessions), you can use a different
@@ -193,7 +203,7 @@ return [
     // Set this to false if you would like to use your own AuthController and PasswordController
     // (you then need to setup your auth routes manually in your routes.php file)
     // Warning: if you disable this, the password recovery routes (below) will be disabled too!
-    'setup_auth_routes' => true,
+    'setup_auth_routes' => false,
 
     // Set this to false if you would like to skip adding the dashboard routes
     // (you then need to overwrite the login route on your AuthController)
@@ -201,7 +211,7 @@ return [
 
     // Set this to false if you would like to skip adding "my account" routes
     // (you then need to manually define the routes in your web.php)
-    'setup_my_account_routes' => true,
+    'setup_my_account_routes' => false,
 
     // Set this to false if you would like to skip adding the password recovery routes
     // (you then need to manually define the routes in your web.php)

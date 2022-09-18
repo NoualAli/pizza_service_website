@@ -1,43 +1,70 @@
-<nav class="navbar navbar-expand-sm fixed-top navbar-light bg-light">
-    <div class="container-fluid">
-        {{-- Navbar Toggeler --}}
-        <div
-            class="navbar-toggler"
-            {{-- type="button" --}}
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </div>
+<nav class="main_navbar">
+    <a class="brand" href="{{ route('home') }}">
+        <img
+            src="{{ asset('assets/brand.png') }}"
+            height="45"
+            alt="{{ env('APP_NAME') }} Logo" />
+    </a>
+    <div class="hamburger" data-target="menu--container">
+        <span class="bar"></span>
+    </div>
+    <div class="menu--container">
+        <ul class="main_menu">
+            <li>
+                <a class="nav_link" href="{{ route('restaurants.list') }}">{{ __('Restaurants') }}</a>
+            </li>
+            @if (session('current-restaurant') && session('current-restaurant')->is_open && count(getCart()->items))
+                <li>
+                    <a href="{{ url('cart-index') }}" class="nav_link">
+                        <i class="bi bi-cart"></i>
+                        {{ __('Cart') }}
+                    </a>
+                </li>
+            @endif
 
-        {{-- Navigation --}}
-        <div class="collapse navbar-collapse row" id="navbarSupportedContent">
-            <div class="col-lg-6">
-                <a class="navbar-brand mt-2 mt-lg-0" href="{{ route('home') }}">
-                    <img
-                        src="{{ asset('assets/brand.png') }}"
-                        height="45"
-                        alt="{{ env('APP_NAME') }} Logo"
-                        loading="lazy" />
-                </a>
-            </div>
-            <div class="col-lg-6">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}">{{ __('Home') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('restaurants.list') }}">{{ __('Restaurants') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="bi bi-cart"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        </ul>
+        <ul class="login_menu">
+            @auth
+                <li>
+                    <a class="ps-navbar-btn account-btn" href="{{ route('backpack.account.info') }}">
+                        <i class="bi bi-person"></i>
+                        {{ __('My account') }}
+                    </a>
+                </li>
+            @else
+                <li>
+                    <a class="ps-navbar-btn login-btn" href="{{ route('backpack.auth.login') }}">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        {{ __('Login') }}
+                    </a>
+                </li>
+                <li>
+                    <a class="ps-navbar-btn register-btn" href="{{ route('backpack.auth.register') }}">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        {{ __('Register') }}
+                    </a>
+                </li>
+            @endauth
+
+        </ul>
     </div>
 </nav>
+@once
+    @push('scripts')
+        <script type="text/javascript">
+            const hamburgerElt = document.querySelector('.hamburger')
+
+            function handleHamburger() {
+                if (hamburgerElt) {
+                    const navbarElt = document.querySelector(`.${hamburgerElt.dataset.target}`)
+                    hamburgerElt.addEventListener('click', function() {
+                        this.classList.toggle('is-active')
+                        navbarElt.classList.toggle('is-active')
+                    })
+                }
+            }
+
+            window.addEventListener('DOMContentLoaded', handleHamburger)
+        </script>
+    @endpush
+@endonce

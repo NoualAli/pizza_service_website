@@ -1,14 +1,20 @@
 const mix = require('laravel-mix');
+require('laravel-vue-i18n/mix');
+
 
 mix.disableNotifications()
-// mix.js('resources/js/website/app.js', 'public/js/website');
-mix.sass('resources/sass/website/app.sass', 'public/css/website').options({
-    autoprefixer: { remove: false },
-    stats: { children: true },
-}).version();
+mix.sass('resources/sass/website/app.sass', 'public/website/css')
+    .sass('resources/sass/website/custom.sass', 'public/website/css').options({
+        autoprefixer: { remove: false },
+        stats: { children: true },
+    }).version();
 
-mix.js('resources/js/app.js', 'public/js')
-mix.js('resources/js/home.js', 'public/js')
-mix.js('resources/js/restaurants.js', 'public/js')
+mix.js('resources/js/website/echo-config.js', 'public/website/js')
+mix.js('resources/js/website/default.js', 'public/website/js')
+mix.js('resources/js/website/Pages/orders.js', 'public/website/js')
+mix.js('resources/js/website/Pages/cart.js', 'public/website/js')
+mix.js('resources/js/website/Pages/home.js', 'public/website/js')
+mix.js('resources/js/website/Pages/restaurants.js', 'public/website/js')
+mix.js('resources/js/website/Pages/restaurant.js', 'public/website/js')
     .vue()
 

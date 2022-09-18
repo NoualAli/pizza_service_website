@@ -21,28 +21,13 @@ class RestaurantsUsersTableSeeder extends Seeder
         \DB::table('restaurants_users')->insert(array (
             0 => 
             array (
-                'restaurant_id' => 5,
-                'user_id' => 1,
+                'restaurant_id' => 4,
+                'user_id' => 3,
             ),
             1 => 
             array (
-                'restaurant_id' => 4,
-                'user_id' => 1,
-            ),
-            2 => 
-            array (
-                'restaurant_id' => 3,
-                'user_id' => 1,
-            ),
-            3 => 
-            array (
-                'restaurant_id' => 2,
-                'user_id' => 1,
-            ),
-            4 => 
-            array (
-                'restaurant_id' => 1,
-                'user_id' => 1,
+                'restaurant_id' => 5,
+                'user_id' => 4,
             ),
         ));
         

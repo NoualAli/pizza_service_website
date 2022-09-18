@@ -15,10 +15,17 @@
         "barryvdh/laravel-debugbar": "^3.7",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.7",
+        "izica/relations-widgets-for-backpack": "^3.2",
+        "jackiedo/cart": "^3.0",
         "laravel/framework": "^9.2",
+        "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.0",
-        "orangehill/iseed": "^3.0"
+        "orangehill/iseed": "^3.0",
+        "paytrail/paytrail-php-sdk": "^2.3",
+        "predis/predis": "^2.0",
+        "stevebauman/location": "^6.5",
+        "stripe/stripe-php": "^9.5"
     },
     "require-dev": {
         "backpack/generators": "^3.1",
@@ -40,7 +47,10 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        }
+        },
+        "files": [
+            "app/Helpers/Main.php"
+        ]
     },
     "scripts": {
         "post-autoload-dump": [

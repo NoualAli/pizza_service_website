@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Product\StoreRequest;
 use App\Http\Requests\Product\UpdateRequest;
-use App\Models\Menu;
-use App\Models\Restaurant;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
@@ -16,12 +20,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  */
 class ProductCrudController extends CrudController
 {
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation;
+    use ListOperation, CreateOperation, UpdateOperation, DeleteOperation, ShowOperation, BulkDeleteOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -44,18 +43,24 @@ class ProductCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->crud->removeButton('create');
-        CRUD::column('menu');
         CRUD::column('name');
-        CRUD::column('price');
+        CRUD::column('restaurant');
+        CRUD::column('menu');
+        CRUD::column('price_norm')->suffix(' €');
         CRUD::column('updated_at');
     }
 
     protected function setupShowOperation()
     {
         CRUD::column('name');
-        CRUD::column('price');
+        CRUD::column('thumbnail')->type('image');
+        CRUD::column('restaurant');
+        CRUD::column('price_norm')->suffix(' €');
+        CRUD::column('price_perhe')->suffix(' €');
+        CRUD::column('price_pannu')->suffix(' €');
         CRUD::column('menu');
-        CRUD::column('ingredients')->label('Recipe')->attribute('name');
+        CRUD::column('recipe')->label('Recipe')->attribute('name');
+        // CRUD::column('extra')->label('Extra')->attribute('name');
         CRUD::column('created_at');
         CRUD::column('updated_at');
     }
@@ -69,18 +74,17 @@ class ProductCrudController extends CrudController
     {
         CRUD::setValidation(StoreRequest::class);
         $menu_id = request()->has('menu') ? request()->menu : null;
-        $menu = Menu::find($menu_id);
-        $restaurant_id = $menu?->restaurants->first()->id;
+        $restaurant_id = request()->has('restaurant') ? request()->restaurant : null;
 
         CRUD::field('restaurant')->type('relationship')->wrapper(DEFAULT_INPUT_CLASS)->default($restaurant_id);
         CRUD::field('menu')->type('relationship')->wrapper(DEFAULT_INPUT_CLASS)->default($menu_id);
         CRUD::field('name');
         CRUD::field('description')->type('textarea');
-        CRUD::field('price')->type('number')->wrapper(WRAPPER_4_COL)->prefix('€');
-        CRUD::field('price_medium')->type('number')->wrapper(WRAPPER_4_COL)->prefix('€');
-        CRUD::field('price_large')->type('number')->wrapper(WRAPPER_4_COL)->prefix('€');
+        CRUD::field('price_norm')->type('number')->wrapper(WRAPPER_4_COL)->prefix('€')->attributes(['step' => 'any']);
+        CRUD::field('price_perhe')->type('number')->wrapper(WRAPPER_4_COL)->prefix('€')->attributes(['step' => 'any']);
+        CRUD::field('price_pannu')->type('number')->wrapper(WRAPPER_4_COL)->prefix('€')->attributes(['step' => 'any']);
         CRUD::field('ingredients')->type('relationship')->wrapper(DEFAULT_INPUT_CLASS);
-        CRUD::field('extra')->type('relationship')->wrapper(DEFAULT_INPUT_CLASS);
+        CRUD::field('extras')->label('Extras')->type('relationship')->wrapper(DEFAULT_INPUT_CLASS);
     }
 
     /**
@@ -97,10 +101,10 @@ class ProductCrudController extends CrudController
         CRUD::field('menu')->type('relationship')->wrapper(DEFAULT_INPUT_CLASS);
         CRUD::field('name');
         CRUD::field('description');
-        CRUD::field('price')->type('number')->wrapper(WRAPPER_4_COL)->prefix('€');
-        CRUD::field('price_medium')->type('number')->wrapper(WRAPPER_4_COL)->prefix('€');
-        CRUD::field('price_large')->type('number')->wrapper(WRAPPER_4_COL)->prefix('€');
+        CRUD::field('price_norm')->type('number')->wrapper(WRAPPER_4_COL)->prefix('€')->attributes(['step' => 'any']);
+        CRUD::field('price_perhe')->type('number')->wrapper(WRAPPER_4_COL)->prefix('€')->attributes(['step' => 'any']);
+        CRUD::field('price_pannu')->type('number')->wrapper(WRAPPER_4_COL)->prefix('€')->attributes(['step' => 'any']);
         CRUD::field('ingredients')->type('relationship')->wrapper(DEFAULT_INPUT_CLASS);
-        CRUD::field('extra')->type('relationship')->wrapper(DEFAULT_INPUT_CLASS);
+        CRUD::field('extras')->label('Extras')->type('relationship')->wrapper(DEFAULT_INPUT_CLASS);
     }
 }

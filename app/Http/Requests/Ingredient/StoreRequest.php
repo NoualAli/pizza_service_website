@@ -25,7 +25,6 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'unique:ingredients,name', 'max:255'],
-            'extra_price' => ['nullable', 'numeric']
         ];
     }
 }

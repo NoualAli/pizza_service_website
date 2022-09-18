@@ -1,0 +1,32 @@
+.ps-radio-btn
+    display: inline-block
+    background-color: rgba($primary, .1)
+    color: $primary
+    margin: 0 5px
+    cursor: pointer
+    padding: 10px 25px
+    font-weight: bold
+    border-radius: 5px
+    transition: .2s ease-in-out
+    &:hover
+        color: $white
+        background-color: $primary
+    &.active
+        background-color: rgba($secondary, .1)
+        color: $secondary
+        &:hover
+            color: $white
+            background-color: $secondary
+    & i
+        display: inline-block
+        vertical-align: middle
+        font-size: 1.2rem
+    &.reset
+        background-color: rgba($danger, .1)
+        color: $danger
+        padding: 10px
+        &:hover
+            color: $white
+            background-color: $danger
+        & i
+            font-size: 1.3rem

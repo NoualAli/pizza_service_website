@@ -1,3 +1,6 @@
+@php
+extract($data);
+@endphp
 @extends(backpack_view('blank'))
 
 @section('after_styles')
@@ -49,6 +52,30 @@ $breadcrumbs = [
 
         {{-- UPDATE INFO FORM --}}
         <div class="col-lg-8">
+            {{-- <form method="post" action="{{ route('backpack.account.info.store') }}">
+                @csrf
+                @method('POST')
+                <div class="card padding-10">
+
+                    <div class="card-header">
+                        {{ trans('backpack::base.update_account_info') }}
+                    </div>
+
+                    <div class="card-body backpack-profile-form bold-labels">
+                        @include('crud::form_content', [
+                            'fields' => $crud->fields(),
+                            // 'action' => 'update',
+                            'action' => route('backpack.account.info.store'),
+                        ])
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-success"><i class="la la-save"></i>
+                            {{ trans('backpack::base.save') }}</button>
+                        <a href="{{ backpack_url() }}" class="btn">{{ trans('backpack::base.cancel') }}</a>
+                    </div>
+                </div>
+            </form> --}}
             <form class="form" action="{{ route('backpack.account.info.store') }}" method="post">
 
                 {!! csrf_field() !!}
@@ -63,27 +90,90 @@ $breadcrumbs = [
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 @php
-                                    $label = 'Username';
-                                    $field = 'username';
+                                    $label = 'Firstname';
+                                    $field = 'firstname';
                                 @endphp
-                                <label class="required">{{ $label }}</label>
-                                <input required class="form-control" type="text" name="{{ $field }}"
+                                <label class="@error($field) text-danger @enderror">{{ $label }}</label>
+                                <input class="form-control @error($field) border-danger @enderror" type="text"
+                                    name="{{ $field }}"
                                     value="{{ old($field) ? old($field) : $user->$field }}">
+                                @error($field)
+                                    <div class="form-text text-danger">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
 
                             <div class="col-md-6 form-group">
                                 @php
-                                    $label = config('backpack.base.authentication_column_name');
-                                    $field = backpack_authentication_column();
+                                    $label = 'Lastname';
+                                    $field = 'lastname';
                                 @endphp
-                                <label class="required">{{ $label }}</label>
-                                <input required class="form-control"
-                                    type="{{ backpack_authentication_column() == 'email' ? 'email' : 'text' }}"
-                                    name="{{ $field }}" value="{{ old($field) ? old($field) : $user->$field }}">
+                                <label class="@error($field) text-danger @enderror">{{ $label }}</label>
+                                <input class="form-control @error($field) border-danger @enderror" type="text"
+                                    name="{{ $field }}"
+                                    value="{{ old($field) ? old($field) : $user->$field }}">
+                                @error($field)
+                                    <div class="form-text text-danger">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col">
+                                @php
+                                    $label = 'Username';
+                                    $field = 'username';
+                                @endphp
+                                <label class="required @error($field) text-danger @enderror">{{ $label }}</label>
+                                <input class="form-control @error($field) border-danger @enderror" type="text"
+                                    name="{{ $field }}"
+                                    value="{{ old($field) ? old($field) : $user->$field }}">
+                                @error($field)
+                                    <div class="form-text text-danger">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                @php
+                                    $label = 'Email';
+                                    $field = 'email';
+                                @endphp
+                                <label class="required @error($field) text-danger @enderror">{{ $label }}</label>
+                                <input class="form-control @error($field) border-danger @enderror"
+                                    type="email"
+                                    name="{{ $field }}"
+                                    value="{{ old($field) ? old($field) : $user->$field }}">
+                                @error($field)
+                                    <div class="form-text text-danger">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 form-group">
+                                @php
+                                    $label = 'Phone';
+                                    $field = 'phone';
+                                @endphp
+                                <label class="required @error($field) text-danger @enderror">{{ $label }}</label>
+                                <input class="form-control @error($field) border-danger @enderror"
+                                    type="phone"
+                                    name="{{ $field }}"
+                                    value="{{ old($field) ? old($field) : $user->$field }}">
+                                @error($field)
+                                    <div class="form-text text-danger">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                     </div>
-
                     <div class="card-footer">
                         <button type="submit" class="btn btn-success"><i class="la la-save"></i>
                             {{ trans('backpack::base.save') }}</button>
@@ -93,7 +183,16 @@ $breadcrumbs = [
 
             </form>
         </div>
-
+        <div class="col-lg-8">
+            <form method="post" action="{{ route('backpack.account.address.store') }}">
+                @csrf
+                @method('POST')
+                @include('crud::form_content', [
+                    'fields' => $crud->fields(),
+                    'action' => 'create',
+                ])
+            </form>
+        </div>
         {{-- CHANGE PASSWORD FORM --}}
         <div class="col-lg-8">
             <form class="form" action="{{ route('backpack.account.password') }}" method="post">

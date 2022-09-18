@@ -1,4 +1,11 @@
 {
-    "/js/website/app.js": "/js/website/app.js?id=77f796b4cba16e92c30fa58a9d418645",
-    "/css/website/app.css": "/css/website/app.css?id=6a6a431bc6930d5856b904a191dc7832"
+    "/website/js/echo-config.js": "/website/js/echo-config.js?id=24698037d4f268993a705bd12577e58e",
+    "/website/js/default.js": "/website/js/default.js?id=da4de6ca61ef38e4b9062098444db7c0",
+    "/website/js/orders.js": "/website/js/orders.js?id=b2eacbf3f507488cb217f4b70b624782",
+    "/website/js/cart.js": "/website/js/cart.js?id=ad88aa1679898631788397e106d6c372",
+    "/website/js/home.js": "/website/js/home.js?id=61c3ddf21337763bae47362c01780c18",
+    "/website/js/restaurants.js": "/website/js/restaurants.js?id=14ed1e51405d14518a82efbb5d9dba5a",
+    "/website/js/restaurant.js": "/website/js/restaurant.js?id=8a94df562fb0c95c36a35af06f9aae77",
+    "/website/css/app.css": "/website/css/app.css?id=df089f7a69b749571d24009a5e69fa0d",
+    "/website/css/custom.css": "/website/css/custom.css?id=994d4f466f41354089e82c69ebcaa6ce"
 }

@@ -16,15 +16,21 @@ return new class extends Migration
         Schema::create('restaurants', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('description')->nullable();
-            $table->string('thumbnail')->nullable();
-            $table->time('opening')->nullable();
-            $table->time('closing')->nullable();
+            $table->string('slug')->unique();
+            $table->string('cover')->nullable();
+            $table->json('time_slots')->nullable();
             $table->float('minimum_order');
+            $table->float('delivery_fee')->default(0);
+            $table->float('discount')->default(0);
+            $table->integer('delivery_time')->default('60');
             $table->string('address');
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
             $table->double('longitude');
             $table->double('latitude');
+            $table->json('order_types')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

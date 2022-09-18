@@ -16,3 +16,8 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+// Authenticate use by restaurant id
+Broadcast::channel('ps-default-{id}', function ($user, $id) {
+    return in_array($id, $user->restaurants->pluck('id')->toArray());
+});
