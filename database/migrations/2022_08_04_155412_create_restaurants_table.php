@@ -28,7 +28,9 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->double('longitude');
             $table->double('latitude');
-            $table->json('order_types')->nullable();
+            $table->boolean('delivery')->default(true);
+            $table->boolean('pickup')->default(true);
+            $table->boolean('on_the_spot')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

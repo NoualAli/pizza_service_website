@@ -143,30 +143,10 @@ class RestaurantCrudController extends CrudController
         // Order
         CRUD::field('discount')->type('number')->prefix('%')->tab('Order settings')->attributes(['step' => 'any'])->wrapper(DEFAULT_INPUT_CLASS);
         CRUD::field('delivery_fee')->type('number')->prefix('€')->tab('Order settings')->attributes(['step' => 'any'])->wrapper(DEFAULT_INPUT_CLASS);
-        CRUD::field('order_types[Delivery]')->type('checkbox')->label('Delivery')->tab('Order settings');
-        CRUD::field('order_types[Pickup]')->type('checkbox')->label('Pickup')->tab('Order settings');
-        CRUD::field('order_types[On the spot]')->type('checkbox')->label('On the spot')->tab('Order settings');
-        // CRUD::field('order_types')->label('')->type('repeatable')->reorder(false)->min_rows(1)->max_rows(1)->subfields([
-        //     [
-        //         'name' => 'Delivery',
-        //         'label' => 'Delivery',
-        //         'type' => 'checkbox',
-        //         'value' => 0
-        //     ],
-        //     [
-        //         'name' => 'Pickup',
-        //         'label' => 'Pickup',
-        //         'type' => 'checkbox',
-        //         'value' => 0
-        //     ],
-        //     [
-        //         'name' => 'On the spot',
-        //         'label' => 'On the spot',
-        //         'type' => 'checkbox',
-        //         'value' => 0
-        //     ],
-
-        // ])->tab('Order settings');
+        CRUD::field('title')->type('custom_html')->value('<label>Order types</label>')->tab('Order settings');
+        CRUD::field('delivery')->type('checkbox')->label('Delivery')->tab('Order settings')->wrapper(WRAPPER_4_COL);
+        CRUD::field('pickup')->type('checkbox')->label('Pickup')->tab('Order settings')->wrapper(WRAPPER_4_COL);
+        CRUD::field('on_the_spot')->label('On the spot')->type('checkbox')->label('On the spot')->tab('Order settings')->wrapper(WRAPPER_4_COL);
     }
 
     /**
@@ -232,8 +212,9 @@ class RestaurantCrudController extends CrudController
         // Order
         CRUD::field('discount')->type('number')->prefix('%')->tab('Order settings')->attributes(['step' => 'any'])->wrapper(DEFAULT_INPUT_CLASS);
         CRUD::field('delivery_fee')->type('number')->prefix('€')->tab('Order settings')->attributes(['step' => 'any'])->wrapper(DEFAULT_INPUT_CLASS);
-        CRUD::field('order_types[Delivery]')->type('checkbox')->label('Delivery')->tab('Order settings');
-        CRUD::field('order_types[Pickup]')->type('checkbox')->label('Pickup')->tab('Order settings');
-        CRUD::field('order_types[On the spot]')->type('checkbox')->label('On the spot')->tab('Order settings');
+        CRUD::field('title')->type('custom_html')->value('<label>Order types</label>')->tab('Order settings');
+        CRUD::field('delivery')->type('checkbox')->label('Delivery')->tab('Order settings')->wrapper(WRAPPER_4_COL);
+        CRUD::field('pickup')->type('checkbox')->label('Pickup')->tab('Order settings')->wrapper(WRAPPER_4_COL);
+        CRUD::field('on_the_spot')->label('On the spot')->type('checkbox')->label('On the spot')->tab('Order settings')->wrapper(WRAPPER_4_COL);
     }
 }

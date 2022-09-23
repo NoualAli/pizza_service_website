@@ -29,15 +29,13 @@ class Restaurant extends Model
         'email',
         'longitude',
         'latitude',
-        'order_types',
+        'delivery',
+        'pickup',
+        'on_the_spot'
     ];
 
     protected $appends = [
         'is_open',
-    ];
-
-    protected $casts = [
-        'order_types' => 'array'
     ];
 
     public function getCoverAttribute($cover)

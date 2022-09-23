@@ -26,7 +26,8 @@ class RestaurantController extends Controller
         }
 
         if (session()->has('order_type') || request()->has('order_type')) {
-            $restaurants = $this->filterByType($restaurants);
+            $restaurants = $restaurants->where(request()->order_type, true);
+            // $restaurants = $this->filterByType($restaurants);
             return response()->json([
                 'restaurants' => RestaurantResource::collection($restaurants)
             ]);
