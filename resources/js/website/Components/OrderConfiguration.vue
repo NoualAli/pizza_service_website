@@ -11,8 +11,8 @@
             :class="{'active': this.order_type == 'pickup'}">
             Pickup
         </span>
-        <span class="ps-radio-btn my-2" @click="this.setOrderType('On the spot')"
-            :class="{'active': this.order_type == 'On the spot'}">
+        <span class="ps-radio-btn my-2" @click="this.setOrderType('on_the_spot')"
+            :class="{'active': this.order_type == 'on_the_spot'}">
             On the spot
         </span>
     </div>

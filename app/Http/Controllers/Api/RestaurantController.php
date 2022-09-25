@@ -19,19 +19,17 @@ class RestaurantController extends Controller
      */
     public function index(Request $request)
     {
+        $restaurants = Restaurant::limit(10);
         if ($request->has('category_id')) {
             $restaurants = Restaurant::nearest()->whereRelation('categories', 'category_id', $request->category_id);
         } else {
             $restaurants = Restaurant::nearest();
         }
 
-        if (session()->has('order_type') || request()->has('order_type')) {
-            $restaurants = $restaurants->where(request()->order_type, true);
-            // $restaurants = $this->filterByType($restaurants);
-            return response()->json([
-                'restaurants' => RestaurantResource::collection($restaurants)
-            ]);
+        if (session()->has('order_type')) {
+            $restaurants = $restaurants->where(session('order_type'), true);
         }
+
         return response()->json([
             'restaurants' => RestaurantResource::collection($restaurants->get())
         ]);
@@ -67,7 +65,7 @@ class RestaurantController extends Controller
     private function filterByType(Builder $restaurants)
     {
         $type = request()->order_type ?: session('order_type');
-        $type = ucfirst(strtolower($type));
+        $type = strtolower($type);
         return $restaurants->get()->filter(function ($restaurant) use ($type) {
             $types = json_decode($restaurant->order_types, true);
             if (count($types)) {
