@@ -10,3 +10,7 @@ export function basePath() {
 export function url(path) {
     return basePath() + path
 }
+
+export function loadImg(path) {
+    return url(`assets/${path}`)
+}
