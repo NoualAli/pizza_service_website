@@ -32,6 +32,7 @@ Route::group([
 ], function () {
     Route::get('/', [RestaurantController::class, 'index']);
     Route::get('{restaurant_id}', [RestaurantController::class, 'show']);
+    Route::get('fetch/current', [RestaurantController::class, 'current']);
 });
 
 /**

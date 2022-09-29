@@ -1,14 +1,12 @@
 <?php
 
 use App\Http\Controllers\Api\CartController;
-use App\Http\Controllers\Api\OrderTypeController;
 use App\Http\Controllers\Website\RestaurantController;
 use App\Http\Controllers\Website\HomeController;
 use App\Http\Controllers\Website\MenuController;
 use App\Http\Controllers\Website\OrderController;
 use App\Models\Order;
 use Illuminate\Support\Facades\Route;
-use Paytrail\SDK\Client;
 
 define('USER_DEFAULT_LOCATION', \Location::get(getIp()));
 
@@ -24,18 +22,11 @@ Route::get('about-us', fn () => view('website.pages.about'))->name('about_us');
 Route::get('restaurants', [RestaurantController::class, 'index'])->name('restaurants.list');
 Route::get('restaurants/{restaurant}', [RestaurantController::class, 'show'])->name('restaurants.single');
 Route::get('menus', [MenuController::class, 'index'])->name('menus.list');
-Route::get('current-restaurant', [RestaurantController::class, 'current']);
 
 /**
  * Cart
  */
 Route::get('cart-index', [CartController::class, 'index']);
-
-/**
- * Order type
- */
-Route::post('order-type', [OrderTypeController::class, 'setType']);
-Route::get('order-type', [OrderTypeController::class, 'getType']);
 
 /**
  * Cart checkout
