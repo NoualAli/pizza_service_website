@@ -38,6 +38,12 @@ class Restaurant extends Model
         'is_open',
     ];
 
+    protected $casts = [
+        'on_the_spot' => 'boolean',
+        'delivery' => 'boolean',
+        'pickup' => 'boolean'
+    ];
+
     public function getCoverAttribute($cover)
     {
         return file_exists($cover) ? $cover : 'assets/no-image-available.svg';

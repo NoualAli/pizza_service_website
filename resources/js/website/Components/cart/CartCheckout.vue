@@ -76,7 +76,8 @@
                 </h4>
                 <order-configuration @orderTypeChanged="this.setOrderType" @clientPlaceChanged="this.setClientLocation"
                     :errors="this.errors" :checkoutForm="true" :showAddressInput="this.orderType == 'delivery'"
-                    :showAutocompleteField="this.orderType == 'delivery'">
+                    :showAutocompleteField="this.orderType == 'delivery'" :showDelivery="!!restaurant.delivery"
+                    :showPickup="!!restaurant.pickup" :showOnTheSpot="!!restaurant.on_the_spot">
                 </order-configuration>
 
 
@@ -169,7 +170,9 @@ export default {
         user: {
             type: [Object, null, String]
         },
-        restaurant: Object
+        restaurant: {
+            type: Object
+        }
     },
     components: [GMapAutocomplete, OrderConfiguration],
     data() {
@@ -264,7 +267,6 @@ export default {
             })
 
         },
-
         onDelivery(result) {
             if (result.data.success) {
                 this.$swal({

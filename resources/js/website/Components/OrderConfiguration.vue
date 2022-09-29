@@ -3,15 +3,15 @@
         <span class="ps-radio-btn reset my-2" v-if="order_type && !checkoutForm" @click="this.setOrderType(null)">
             <i class="las la-ban"></i>
         </span>
-        <span class="ps-radio-btn my-2" @click="this.setOrderType('delivery')"
+        <span v-if="showDelivery" class="ps-radio-btn my-2" @click="this.setOrderType('delivery')"
             :class="{'active': this.order_type == 'delivery'}">
             Delivery
         </span>
-        <span class="ps-radio-btn my-2" @click="this.setOrderType('pickup')"
+        <span v-if="showPickup" class="ps-radio-btn my-2" @click="this.setOrderType('pickup')"
             :class="{'active': this.order_type == 'pickup'}">
             Pickup
         </span>
-        <span class="ps-radio-btn my-2" @click="this.setOrderType('on_the_spot')"
+        <span v-if="showOnTheSpot" class="ps-radio-btn my-2" @click="this.setOrderType('on_the_spot')"
             :class="{'active': this.order_type == 'on_the_spot'}">
             On the spot
         </span>
@@ -128,7 +128,19 @@ export default {
         errors: {
             type: Object,
             default: null,
-        }
+        },
+        showDelivery: {
+            type: Boolean,
+            default: true,
+        },
+        showPickup: {
+            type: Boolean,
+            default: true,
+        },
+        showOnTheSpot: {
+            type: Boolean,
+            default: true,
+        },
     },
     components: { GMapAutocomplete },
     data() {
@@ -232,7 +244,9 @@ export default {
             await axios.post(url('api/order-type'), {
                 order_type: this.order_type
             }).then(result => {
-                this.$emit('orderTypeChanged', this.order_type)
+                this.$emit('orderTypeChanged', {
+                    order_type: this.order_type
+                })
             })
         },
         async getOrderType() {
