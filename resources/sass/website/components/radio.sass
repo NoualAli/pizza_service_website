@@ -17,19 +17,23 @@
         & circle
             transition: .2s ease-in-out
         & *
-            fill: $primary !important
+            fill: $primary
     &:hover
         color: $white
         background-color: $primary
         & svg
             & *
-                fill: $white !important
+                fill: $white
     &.active
         background-color: rgba($secondary, .1)
         color: $secondary
+        & svg *
+            fill: $secondary
         &:hover
             color: $white
             background-color: $secondary
+            & svg *
+                fill: $white
     & i
         display: inline-block
         vertical-align: middle
