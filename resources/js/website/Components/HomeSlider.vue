@@ -2,13 +2,9 @@
     <div class="header_container">
         <Splide :options="this.sliderOptions" aria-label="My Favorite Images">
             <SplideSlide>
-                <img :src="this.sliderOneImg" alt="" class="slider_img">
+                <img :src="this.sliderOneImg" alt="Pizz Service" class="slider_img">
             </SplideSlide>
         </Splide>
-        <!-- <div class="box container">
-            <order-configuration :showAddressInput="false">
-            </order-configuration>
-        </div> -->
     </div>
 </template>
 
@@ -16,7 +12,7 @@
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
 import OrderConfiguration from './OrderConfiguration'
 import '@splidejs/splide/dist/css/themes/splide-skyblue.min.css';
-import { url } from '../Helpers/main'
+import { url, loadImg } from '../Helpers/main'
 export default {
     components: {
         Splide,
@@ -25,7 +21,7 @@ export default {
     },
     computed: {
         sliderOneImg() {
-            return url('assets/heros/slider1.jpg')
+            return loadImg('heros/slider1.jpg')
         }
     },
     data() {
@@ -33,7 +29,7 @@ export default {
             sliderOptions: {
                 rewind: true,
                 width: '100%',
-                height: 'calc(100vh - 61px)',
+                height: '40vh',
                 heightRatio: 0.8,
                 cover: true,
                 type: 'slide',
@@ -41,7 +37,6 @@ export default {
                 gap: 0,
                 padding: 0,
                 drag: true,
-                // arrows: false,
                 pagination: false,
                 trimSpace: 'move',
             }

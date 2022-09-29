@@ -1,8 +1,10 @@
 @extends('website.layouts.default')
 
 @section('content')
-    {{-- @include('website.includes.main_header') --}}
-    {{-- <home-slider></home-slider> --}}
+    <home-slider></home-slider>
+    <div class="container-fluid">
+        <restaurants-list></restaurants-list>
+    </div>
     <div class="container-fluid">
         <div class="row text-center my-5">
             <h2>Easy and fast</h2>
