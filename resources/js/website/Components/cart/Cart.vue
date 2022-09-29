@@ -53,13 +53,13 @@ export default {
     },
     methods: {
         async getCurrentRestaurnt() {
-            await axios.get(url('current-restaurant')).then(result => {
+            await axios.get(url('api/restaurants/fetch/current')).then(result => {
                 this.currentRestaurant = result.data.current_restaurant
                 this.currentRestaurantUrl = url('restaurants/' + this.currentRestaurant.id)
             })
         },
         async getTypeOfOrder() {
-            await axios.get(url('order-type')).then(result => {
+            await axios.get(url('api/order-type')).then(result => {
                 this.orderType = result.data.type
             })
         },
