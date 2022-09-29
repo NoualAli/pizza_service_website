@@ -35,7 +35,9 @@ export default {
         },
         setCategory(category) {
             this.currentCategory = category
-            this.$emit('categoryChanged', this.currentCategory)
+            this.$emit('categoryChanged', {
+                category: this.currentCategory
+            })
         }
     }
 }
