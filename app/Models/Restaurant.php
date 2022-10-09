@@ -96,13 +96,16 @@ class Restaurant extends Model
      */
     public function scopeNearest($query)
     {
-        $coords = getUserCoords();
-        extract($coords);
-        return $query->select(DB::raw('*, ROUND((6371000 * acos(cos(radians(' . $latitude . '))
-        * cos(radians(latitude)) * cos(radians(longitude) - radians(' . $longitude . '))
-        + sin(radians(' . $latitude . ')) * sin(radians(latitude)))) / 1000) AS distance'))
-            ->having('distance', '<=', DEFAULT_DISTANCE)
-            ->orderBy('distance');
+        if (session('location')) {
+            $coords = getUserCoords();
+            extract($coords);
+            $query = $query->select(DB::raw('*, ROUND((6371000 * acos(cos(radians(' . $latitude . '))
+            * cos(radians(latitude)) * cos(radians(longitude) - radians(' . $longitude . '))
+            + sin(radians(' . $latitude . ')) * sin(radians(latitude)))) / 1000) AS distance'))
+                ->having('distance', '<=', DEFAULT_DISTANCE)
+                ->orderBy('distance');
+        }
+        return $query;
     }
 
     /**
