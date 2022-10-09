@@ -37,11 +37,4 @@ class RestaurantController extends Controller
         $restaurant->load(['products', 'menus']);
         return view('website.pages.restaurant', compact('restaurant'));
     }
-
-    public function current()
-    {
-        return response()->json([
-            'current_restaurant' => session()->get('current-restaurant')
-        ]);
-    }
 }

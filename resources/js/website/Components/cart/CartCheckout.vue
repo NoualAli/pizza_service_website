@@ -5,8 +5,9 @@
             <div class="col-12">
                 <h4 class="mb-3">Client informations</h4>
 
+                <!-- Personal informations -->
                 <div class="row g-2 mb-2">
-                    <div class="col-md">
+                    <div class="col-md-6">
                         <div class="form-floating">
                             <input type="text" v-model="clientInputs.firstname" id="firstname" class="form-control"
                                 :class="{ 'border-danger': this.errors['client.firstname'] }"
@@ -21,7 +22,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md">
+                    <div class="col-md-6">
                         <div class="form-floating">
                             <input type="text" v-model="clientInputs.lastname" id="lastname" class="form-control"
                                 :class="{ 'border-danger': this.errors['client.lastname'] }"
@@ -36,10 +37,8 @@
                             {{ this.errors['client.lastname'][0] }}
                         </div>
                     </div>
-                </div>
 
-                <div class="row g-2">
-                    <div class="col-md">
+                    <div class="col-md-6">
                         <div class="form-floating">
                             <input type="email" class="form-control" v-model="clientInputs.email" id="email"
                                 placeholder="you@example.com">
@@ -54,7 +53,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md">
+                    <div class="col-md-6">
                         <div class="form-floating">
                             <input type="text" v-model="clientInputs.phone" id="phone" class="form-control"
                                 :class="{ 'border-danger': this.errors['client.phone'] }"
@@ -75,8 +74,8 @@
                     Order type
                 </h4>
                 <order-configuration @orderTypeChanged="this.setOrderType" @clientPlaceChanged="this.setClientLocation"
-                    :errors="this.errors" :checkoutForm="true" :showAddressInput="this.orderType == 'delivery'"
-                    :showAutocompleteField="this.orderType == 'delivery'" :showDelivery="!!restaurant.delivery"
+                    :errors="this.errors" :checkoutForm="true" :showAddressInput="this.order_type == 'delivery'"
+                    :showAutocompleteField="this.order_type == 'delivery'" :showDelivery="!!restaurant.delivery"
                     :showPickup="!!restaurant.pickup" :showOnTheSpot="!!restaurant.on_the_spot">
                 </order-configuration>
 
@@ -108,43 +107,104 @@
                                 <i class="las la-money-bill-wave"></i>
                                 Cash (on delivery)
                             </span>
-                            <div class="form-text text-danger" v-if="this.errors['client.firstname']">
+                            <div class="form-text text-danger" v-if="this.errors['payment_method']">
                                 {{ this.errors['payment_method'][0] }}
                             </div>
                         </div>
 
                         <!-- Card informations -->
-                        <div class="row gy-3" v-if="paymentMethod == 'Credit / Debit Card'">
+                        <div class="row gy-3" v-if="this.paymentMethod == 'Credit / Debit card'">
                             <div class="col-md-6">
-                                <label for="cc-name" class="form-label">Name on card</label>
-                                <input type="text" class="form-control" id="cc-name" placeholder="" required>
-                                <small class="text-muted">Full name as displayed on card</small>
-                                <div class="invalid-feedback">
-                                    Name on card is required
+                                <div class="form-floating">
+                                    <input type="text" v-model="this.cardInformations.cc_card" id="cc_card"
+                                        class="form-control"
+                                        :class="{ 'border-danger': this.errors['cc_informations.cc_card'] }">
+                                    <label for="cc_card" class="form-label"
+                                        :class="{ 'text-danger': this.errors['cc_informations.cc_card'] }">
+                                        Name on card
+                                        <span class="text-danger fw-bold">*</span>
+                                    </label>
+                                </div>
+                                <div class="form-text text-danger" v-if="this.errors['cc_informations.cc_card']">
+                                    {{ this.errors['cc_informations.cc_card'][0] }}
                                 </div>
                             </div>
 
                             <div class="col-md-6">
-                                <label for="cc-number" class="form-label">Credit card number</label>
-                                <input type="text" class="form-control" id="cc-number" placeholder="" required>
-                                <div class="invalid-feedback">
-                                    Credit card number is required
+                                <div class="form-floating">
+                                    <input type="text" v-model="this.cardInformations.cc_number" id="cc_number"
+                                        class="form-control"
+                                        :class="{ 'border-danger': this.errors['cc_informations.cc_number'] }">
+                                    <label for="cc_number" class="form-label"
+                                        :class="{ 'text-danger': this.errors['cc_informations.cc_number'] }">
+                                        Credit card number
+                                        <span class="text-danger fw-bold">*</span>
+                                    </label>
+                                </div>
+                                <div class="form-text text-danger" v-if="this.errors['cc_informations.cc_number']">
+                                    {{ this.errors['cc_informations.cc_number'][0] }}
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
-                                <label for="cc-expiration" class="form-label">Expiration</label>
-                                <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
-                                <div class="invalid-feedback">
-                                    Expiration date required
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="text" v-model="this.cardInformations.cc_year" id="cc_year"
+                                        class="form-control"
+                                        :class="{ 'border-danger': this.errors['cc_informations.cc_year'] }">
+                                    <label for="cc_year" class="form-label"
+                                        :class="{ 'text-danger': this.errors['cc_informations.cc_year'] }">
+                                        Year
+                                        <span class="text-danger fw-bold">*</span>
+                                    </label>
+                                </div>
+                                <div class="form-text text-danger" v-if="this.errors['cc_informations.cc_year']">
+                                    {{ this.errors['cc_informations.cc_year'][0] }}
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
-                                <label for="cc-cvv" class="form-label">CVV</label>
-                                <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
-                                <div class="invalid-feedback">
-                                    Security code required
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <select class="form-select" v-model="this.cardInformations.cc_month" id="cc_month"
+                                        :class="{ 'border-danger': this.errors['cc_informations.cc_month'] }"
+                                        aria-label="Select month">
+                                        <option selected>Please choose a month</option>
+                                        <option value="01">January</option>
+                                        <option value="02">February</option>
+                                        <option value="03">March</option>
+                                        <option value="04">April</option>
+                                        <option value="05">May</option>
+                                        <option value="06">June</option>
+                                        <option value="07">July</option>
+                                        <option value="08">August</option>
+                                        <option value="09">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
+                                    <label for="cc_month" class="form-label"
+                                        :class="{ 'text-danger': this.errors['cc_informations.cc_month'] }">
+                                        Month
+                                        <span class="text-danger fw-bold">*</span>
+                                    </label>
+                                </div>
+                                <div class="form-text text-danger" v-if="this.errors['cc_informations.cc_month']">
+                                    {{ this.errors['cc_informations.cc_month'][0] }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="text" v-model="this.cardInformations.cc_cvc" id="cc_cvc"
+                                        class="form-control"
+                                        :class="{ 'border-danger': this.errors['cc_informations.cc_cvc'] }">
+                                    <label for="cc_cvc" class="form-label"
+                                        :class="{ 'text-danger': this.errors['cc_informations.cc_cvc'] }">
+                                        CVC
+                                        <span class="text-danger fw-bold">*</span>
+                                    </label>
+                                </div>
+                                <div class="form-text text-danger" v-if="this.errors['cc_informations.cc_cvc']">
+                                    {{ this.errors['cc_informations.cc_cvc'][0] }}
                                 </div>
                             </div>
                         </div>
@@ -179,13 +239,14 @@ export default {
         return {
             clientInputs: {},
             clientLocation: {},
-            orderType: null,
+            order_type: null,
             paymentMethod: null,
+            cardInformations: {},
             errors: [],
             showAddressInput: true,
         }
     },
-    created() {
+    mounted() {
         this.getOrderType()
         this.loadClientInfo()
     },
@@ -209,20 +270,27 @@ export default {
             return Object.keys(JSON.parse(JSON.stringify(options.extra))).join(', ')
         },
         async setOrderType(data) {
-            this.orderType = data
+            this.order_type = data.order_type
             await axios.post(url('api/order-type'), {
-                order_type: this.orderType
-            }).then(result => { })
+                order_type: this.order_type
+            }).then(result => {
+                this.$emit('orderTypeChanged', {
+                    order_type: this.order_type
+                })
+            })
         },
         async getOrderType() {
             await axios.get(url('api/order-type')).then(result => {
-                this.orderType = result.data
+                this.order_type = result.data.order_type
+                this.$emit('orderTypeChanged', {
+                    order_type: this.order_type
+                })
             })
         },
         // Reset all data
         reset() {
             this.clientInputs = {}
-            this.orderType = null
+            this.order_type = null
             this.errors = []
         },
         loadClientInfo() {
@@ -235,11 +303,13 @@ export default {
             }
         },
         async checkout(e) {
+            console.log(this.cardInformations);
             e.target.disabled = true
             await axios.post(url('cart-checkout'), {
-                order_type: this.orderType,
+                order_type: this.order_type,
                 client: this.clientInputs,
-                payment_method: this.paymentMethod
+                payment_method: this.paymentMethod,
+                cc_informations: this.cardInformations
             }).then(result => {
                 if (result.data.payment_type == 'on delivery') {
                     this.onDelivery(result)

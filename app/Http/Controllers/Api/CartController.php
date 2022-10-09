@@ -206,17 +206,17 @@ class CartController extends Controller
         }
         if ($data['payment_method'] == 'Credit / Debit card') {
             try {
-                return $this->stripePayment($order);
+                return $this->stripePayment($order, $request->only('cc_informations'));
             } catch (\Throwable $th) {
                 return $th->getMessage();
             }
         }
     }
 
-    private function stripePayment($order)
+    private function stripePayment($order, $data)
     {
         $payment = new StripePayment(env('STRIPE_SK'), $order);
-        return $payment->proceed();
+        return $payment->stripe($data);
     }
 
     /**
@@ -255,12 +255,13 @@ class CartController extends Controller
         $data['subtotal'] = $this->calculateSubtotal($details);
         $data['total'] = $this->calculateTotal($details);
         $data['delivery_fee'] = $details->extra_info['delivery_fee'];
+        $data['order_type'] = session('order_type');
         if (backpack_user()?->id) {
             $data['user_id'] = backpack_user()->id;
         }
         foreach ($data['client'] as $key => $value) {
             if ($key == 'location') {
-                if ($data['order_type'] == 'delivery') {
+                if (session('order_type') == 'delivery') {
                     $data[$key] = json_encode($value);
                 }
             } else {

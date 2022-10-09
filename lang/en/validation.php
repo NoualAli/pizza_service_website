@@ -169,6 +169,11 @@ return [
         'client.location.appartment_number' => 'appartment number',
         'client.location.postal_code' => 'postal code',
         'client.location.city' => 'city',
+        'cc_informations.cc_number' => 'credit card number',
+        'cc_informations.cc_month' => 'month',
+        'cc_informations.cc_year' => 'year',
+        'cc_informations.cc_cvc' => 'cvc',
+        'cc_informations.cc_card' => 'name on card',
     ],
 
 ];

@@ -7,8 +7,8 @@ use App\Http\Resources\OrderResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\RestaurantResource;
 use App\Models\Restaurant;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class RestaurantController extends Controller
 {
@@ -19,16 +19,19 @@ class RestaurantController extends Controller
      */
     public function index(Request $request)
     {
-        $restaurants = Restaurant::limit(10);
+        $restaurants = Restaurant::nearest();
+
         if ($request->has('category_id')) {
-            $restaurants = Restaurant::nearest()->whereRelation('categories', 'category_id', $request->category_id);
-        } else {
-            $restaurants = Restaurant::nearest();
+            $restaurants = $restaurants->whereRelation('categories', 'category_id', $request->category_id);
+        }
+        if ($request->has('order_type')) {
+            $restaurants = $restaurants->where($request->order_type, true);
         }
 
-        if (session()->has('order_type')) {
-            $restaurants = $restaurants->where(session('order_type'), true);
+        if (Route::currentRouteName() !== "restaurants.list") {
+            $restaurants = $restaurants->limit(4);
         }
+        $restaurants->orderBy('distance');
 
         return response()->json([
             'restaurants' => RestaurantResource::collection($restaurants->get())
@@ -46,32 +49,26 @@ class RestaurantController extends Controller
         return response()->json(compact('restaurant', 'products'));
     }
 
-    public function filter(Request $request, Restaurant $restaurant)
-    {
-        $orders = $restaurant->orders();
-        foreach ($request->all() as $key => $value) {
-            $orders = $orders->where($key, $value);
-        }
-        return response()->json([
-            'orders' => OrderResource::collection($orders->get())
-        ]);
-    }
 
     /**
-     * @param Illuminate\Database\Eloquent\Builder  $restaurants
+     * Fetch current restaurant
      *
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Http\JsonResponse
      */
-    private function filterByType(Builder $restaurants)
+    public function current()
     {
-        $type = request()->order_type ?: session('order_type');
-        $type = strtolower($type);
-        return $restaurants->get()->filter(function ($restaurant) use ($type) {
-            $types = json_decode($restaurant->order_types, true);
-            if (count($types)) {
-                return $types[0][$type];
-            }
-            return;
-        });
+        return response()->json([
+            'current_restaurant' => session()->get('current-restaurant')
+        ]);
     }
+    // public function filter(Request $request, Restaurant $restaurant)
+    // {
+    //     $orders = $restaurant->orders();
+    //     foreach ($request->all() as $key => $value) {
+    //         $orders = $orders->where($key, $value);
+    //     }
+    //     return response()->json([
+    //         'orders' => OrderResource::collection($orders->get())
+    //     ]);
+    // }
 }

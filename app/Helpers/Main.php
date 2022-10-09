@@ -49,3 +49,15 @@ if (!function_exists('getCart')) {
         return Cart::name('ps-cart')->getDetails();
     }
 }
+
+if (!function_exists('MonthsList')) {
+    /**
+     * Months List
+     *
+     * @return array
+     */
+    function monthsList()
+    {
+        return ['01' => __('January'), '02' => __('February'), '03' => __('March'), '04' => __('April'), '05' => __('May'), '06' => __('June'), '07' => __('July'), '08' => __('August'), '09' => __('September'), '10' => __('Octeber'), '11' => __('November'), '12' => __('Decemeber')];
+    }
+}

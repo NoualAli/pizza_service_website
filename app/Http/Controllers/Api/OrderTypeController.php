@@ -18,6 +18,6 @@ class OrderTypeController extends Controller
 
     public function get()
     {
-        return session('order_type');
+        return response()->json(session('order_type'));
     }
 }

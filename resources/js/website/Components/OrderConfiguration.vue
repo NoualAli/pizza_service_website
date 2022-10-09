@@ -3,8 +3,8 @@
         <span class="ps-radio-btn reset my-2" v-if="order_type && !checkoutForm" @click="this.setOrderType(null)">
             <i class="las la-ban"></i>
         </span>
-        <span v-if="showDelivery" class="ps-radio-btn my-2" @click="this.setOrderType('delivery')"
-            :class="{'active': this.order_type == 'delivery'}">
+        <span v-if="showDelivery || this.order_type == 'delivery'" class="ps-radio-btn my-2"
+            @click="this.setOrderType('delivery')" :class="{'active': this.order_type == 'delivery'}">
             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                 x="0px" y="0px" viewBox="0 0 406.783 406.783" style="enable-background:new 0 0 406.783 406.783;"
                 xml:space="preserve">
@@ -91,6 +91,9 @@
             </svg>
             On the spot
         </span>
+        <div class="form-text text-danger" v-if="hasError('order_type')">
+            {{ this.errors['order_type'][0] }}
+        </div>
     </div>
 
     <div class="form-floating" v-if="showAutocompleteField">
@@ -248,7 +251,9 @@ export default {
     },
     methods: {
         hasError(key) {
-            return Object.hasOwnProperty.call(this.errors, key)
+            if (this.errors) {
+                return Object.hasOwnProperty.call(this.errors, key)
+            }
         },
         setLocation(key, value) {
             console.log(value);
@@ -327,7 +332,7 @@ export default {
         },
         async getOrderType() {
             await axios.get(url('api/order-type')).then(result => {
-                this.order_type = result.data
+                this.order_type = result.data.order_type
             })
         },
     }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Order;
 
+use App\Rules\IsMonth;
+use App\Rules\IsValidYear;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -26,9 +28,7 @@ class StoreRequest extends FormRequest
     {
         $order_type = request()->order_type;
         $isOrderTypeDelivery = $order_type == 'delivery';
-
         return [
-            'order_type' => ['required', 'string', 'in:delivery,pickup,on-the-spot'],
             'client.lastname' => ['required', 'string', 'max:255'],
             'client.firstname' => ['required', 'string', 'max:255'],
             'client.email' => ['nullable', 'email'],
@@ -38,7 +38,12 @@ class StoreRequest extends FormRequest
             'client.location.appartment_number' => ['nullable', Rule::requiredIf($isOrderTypeDelivery), 'string', 'max:255'],
             'client.location.postal_code' => ['nullable', Rule::requiredIf($isOrderTypeDelivery), 'string', 'max:255'],
             'client.location.city' => ['nullable', Rule::requiredIf($isOrderTypeDelivery), 'string', 'max:255'],
-            'payment_method' => ['required', 'in:Online Banking,Credit / Debit card,Bank Card,Cash']
+            'payment_method' => ['required', 'in:Online Banking,Credit / Debit card,Bank Card,Cash'],
+            'cc_informations.cc_number' => ['required_if:payment_method,Credit / Debit card', 'numeric', 'digits:16'],
+            'cc_informations.cc_month' => ['required_if:payment_method,Credit / Debit card', new IsMonth],
+            'cc_informations.cc_year' => ['required_if:payment_method,Credit / Debit card', new IsValidYear],
+            'cc_informations.cc_cvc' => ['required_if:payment_method,Credit / Debit card'],
+            'cc_informations.cc_card' => ['nullable'],
         ];
     }
 }
