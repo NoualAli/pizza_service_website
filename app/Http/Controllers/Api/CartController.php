@@ -180,15 +180,8 @@ class CartController extends Controller
         $data = $this->sanitizedData($request, $details, $restaurant);
         $order = $this->createOrder($data, $details);
         if ($data['payment_method'] == 'Bank Card' || $data['payment_method'] == 'Cash') {
-            $this->dispatchEvent($order);
-
-            // Reset cart
-            $this->cart->destroy();
-            $this->cart = Cart::name('ps-cart');
-            session()->remove('current-restaurant');
-            session()->remove('order-type');
-
             if ($order->wasRecentlyCreated) {
+                $this->dispatchEvent($order);
                 return response()->json([
                     'payment_type' => 'on delivery',
                     'success' => true,
@@ -206,7 +199,19 @@ class CartController extends Controller
         }
         if ($data['payment_method'] == 'Credit / Debit card') {
             try {
-                return $this->stripePayment($order, $request->only('cc_informations'));
+                $response = $this->stripePayment($order, $request->only('cc_informations'));
+                if ($response->status == 'succeeded') {
+                    $this->dispatchEvent($order);
+                    return response()->json([
+                        'payment_type' => 'stripe',
+                        'success' => true,
+                        'message' => __('Your order has been launched successfully')
+                    ]);
+                }
+                return response()->json([
+                    'success' => false,
+                    'message' => __('Please verify your credit card number')
+                ]);
             } catch (\Throwable $th) {
                 return $th->getMessage();
             }
@@ -245,6 +250,11 @@ class CartController extends Controller
         // Dispatch event
         $event = new OrderCreatedEvent($order);
         broadcast($event);
+        // Reset cart
+        $this->cart->destroy();
+        $this->cart = Cart::name('ps-cart');
+        session()->remove('current-restaurant');
+        session()->remove('order-type');
     }
 
     private function sanitizedData($request, $details, $restaurant)

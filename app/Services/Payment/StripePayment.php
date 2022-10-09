@@ -97,7 +97,7 @@ class StripePayment
             ]);
 
             $response = $stripe->charges->create([
-                'amount' => $this->order->getAttributes()['total'] * 1000,
+                'amount' => $this->order->getAttributes()['total'] * 100,
                 'currency' => 'eur',
                 'source' => $token->id,
                 'description' => $this->order->restaurant->name . ': Payment for order #' . $this->order->id,
@@ -106,11 +106,8 @@ class StripePayment
             // Keep this identifier in case of complaint you will be asked
             // #' . $this->order->id . '
             // for using our app');
-            return response()->json([
-                'url_redirection' => env('APP_URL') . '/checkout/stripe/success?order_id=' . $this->order->id,
-                'success' => true,
-                'payment_type' => 'stripe',
-            ], 201);
+            $appUrl = env('APP_DEBUG') ? env('APP_URL') . ':8000' : env('APP_URL');
+            return $response;
         } catch (\Throwable $th) {
 
             return response()->json(['message' => $th->getMessage()], 500);

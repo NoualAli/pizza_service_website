@@ -311,12 +311,7 @@ export default {
                 payment_method: this.paymentMethod,
                 cc_informations: this.cardInformations
             }).then(result => {
-                if (result.data.payment_type == 'on delivery') {
-                    this.onDelivery(result)
-                }
-                if (result.data.payment_type == 'stripe') {
-                    this.stripe(result)
-                }
+                this.message(result)
                 e.target.disabled = false
             }).catch(error => {
                 e.target.disabled = false
@@ -337,7 +332,7 @@ export default {
             })
 
         },
-        onDelivery(result) {
+        message(result) {
             if (result.data.success) {
                 this.$swal({
                     icon: 'success',
@@ -359,17 +354,17 @@ export default {
                 });
             }
         },
-        stripe(result) {
-            if (result.data.success) {
-                window.location.href = result.data.url_redirection
-            } else {
-                this.$swal({
-                    icon: 'error',
-                    text: result.data.message,
-                    position: 'center',
-                });
-            }
-        }
+        // stripe(result) {
+        //     if (result.data.success) {
+        //         window.location.href = result.data.url_redirection
+        //     } else {
+        //         this.$swal({
+        //             icon: 'error',
+        //             text: result.data.message,
+        //             position: 'center',
+        //         });
+        //     }
+        // }
     }
 }
 </script>

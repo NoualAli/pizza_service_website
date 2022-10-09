@@ -1,12 +1,12 @@
 <template>
     <div>
-        <div class="container my-5">
+        <!-- <div class="container my-5">
             <order-configuration @orderTypeChanged="this.filterByOrderType" @clientPlaceChanged="this.fetchRestaurants"
                 :showAddressInput="false">
             </order-configuration>
             <CategoriesList @categoryChanged="this.filterByCatgegory" @categoryCleared="this.fetchRestaurants">
             </CategoriesList>
-        </div>
+        </div> -->
         <Transition name="fade">
             <div class="row my-5" v-if="Object.entries(this.restaurants)?.length">
                 <div class="col-lg-3 my-2" v-for="restaurant in restaurants" :key="restaurant.id">
@@ -38,11 +38,10 @@ export default {
             restaurants: {},
             categories: {},
             currentCategory: null,
-            urlParams: '',
         }
     },
 
-    mounted() {
+    created() {
         this.fetchRestaurants()
     },
 
@@ -70,22 +69,6 @@ export default {
                 this.fetchRestaurants()
             }
         },
-
-        buildUrlParams(key, value) {
-            this.urlParams = this.urlParams?.split('&').map(param => {
-                return param.substring(0, 1) == '?' ? param.substring(1) : param
-            })
-            console.log(this.urlParams);
-
-            let separator = this.urlParams?.length > 1 ? '&' : '?'
-            let param = `${separator}${key}=${value}`
-            this.urlParams.push(param)
-            // console.log(this.urlParams);
-            // this.urlParams = [...new Set(this.urlParams)]
-
-            // this.urlParams = this.urlParams.join('')
-            // console.log(this.urlParams);
-        }
     }
 }
 </script>
