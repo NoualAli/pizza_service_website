@@ -26,7 +26,7 @@ if (!function_exists('getUserCoords')) {
             $location = USER_DEFAULT_LOCATION;
             if ($location) {
                 session(['location' => [
-                    'street_address' => $location->city,
+                    'street_address' => $location?->city,
                     'longitude' => $location->longitude,
                     'latitude' => $location->latitude,
                 ]]);
